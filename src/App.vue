@@ -8,6 +8,12 @@ const cardNum = 1;
 
 const isReverse = ref(false);
 
+const status = ref<"pending" | "success" | "fail">("pending");
+
+const setStatus = (newStatus: "success" | "fail") => {
+  status.value = newStatus;
+};
+
 const increment = () => {
   val.value++;
 };
@@ -29,7 +35,9 @@ const isCardReversed = () => {
     card-english="hello"
     card-russian="привет"
     :card-reverse="isReverse"
-    @click="isCardReversed"
+    :status="status"
+    @flip="isCardReversed"
+    @set-status="setStatus"
   />
 </template>
 
@@ -42,5 +50,14 @@ const isCardReversed = () => {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+
+  padding: 16px 24px;
+
+  border-bottom: 1px solid #000;
+}
+
+.header > div:first-child {
+  font-size: 24px;
+  font-weight: 600;
 }
 </style>

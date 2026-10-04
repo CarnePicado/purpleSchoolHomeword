@@ -4,15 +4,17 @@ defineProps<{
   cardEnglish: string;
   cardReverse: boolean;
   cardNumber: number;
+  status: "pending" | "success" | "fail";
 }>();
 
 const emit = defineEmits<{
-  click: [];
+  flip: [];
+  "set-status": [status: "success" | "fail"];
 }>();
 </script>
 
 <template>
-  <div class="card" @click="emit('click')">
+  <div class="card" @click="emit('flip')">
     <div class="card__content">
       <div class="card__number">
         {{ cardNumber }}
@@ -31,9 +33,27 @@ const emit = defineEmits<{
       <div v-if="!cardReverse" class="card__action">Перевернуть</div>
 
       <div v-else class="card__actions">
-        <button class="card__button" type="button" @click.stop>Да</button>
+        <template v-if="status === 'pending'">
+          <button
+            class="card__button"
+            type="button"
+            @click.stop="emit('set-status', 'success')"
+          >
+            Да
+          </button>
 
-        <button class="card__button" type="button" @click.stop>Нет</button>
+          <button
+            class="card__button"
+            type="button"
+            @click.stop="emit('set-status', 'fail')"
+          >
+            Нет
+          </button>
+        </template>
+
+        <div v-else-if="status === 'success'">Верно!</div>
+
+        <div v-else>Неверно</div>
       </div>
     </div>
   </div>
