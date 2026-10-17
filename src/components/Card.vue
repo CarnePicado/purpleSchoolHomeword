@@ -1,8 +1,8 @@
 <script setup lang="ts">
 defineProps<{
-  cardRussian: string;
-  cardEnglish: string;
-  cardReverse: boolean;
+  word: string;
+  translation: string;
+  state: "closed" | "opened";
   cardNumber: number;
   status: "pending" | "success" | "fail";
 }>();
@@ -21,16 +21,16 @@ const emit = defineEmits<{
       </div>
 
       <div class="card__word">
-        <template v-if="!cardReverse">
-          {{ cardEnglish }}
+        <template v-if="state === 'closed'">
+          {{ word }}
         </template>
 
         <template v-else>
-          {{ cardRussian }}
+          {{ translation }}
         </template>
       </div>
 
-      <div v-if="!cardReverse" class="card__action">Перевернуть</div>
+      <div v-if="state === 'closed'" class="card__action">Перевернуть</div>
 
       <div v-else class="card__actions">
         <template v-if="status === 'pending'">
